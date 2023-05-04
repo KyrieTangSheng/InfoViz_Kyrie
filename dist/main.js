@@ -20,7 +20,8 @@ function Cell(props) {
     xScale = props.xScale,
     yScale = props.yScale,
     color = props.color;
-  //console.log('dattr:', dAttr)
+  console.log(dAttr);
+  console.log(xScale(dAttr));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
     transform: "translate(".concat(xScale(dAttr), ", ").concat(yScale(dTeam), ")")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
@@ -64349,31 +64350,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var lplTeamUrl = "https://gist.githubusercontent.com/KyrieTangSheng/be96c5e4df7748a5d8462fe618451bc6/raw/13dfdaab3f025db0725547cf1b93a24ea5f6fc37/lpl_team.csv";
-var csvUrl = "https://gist.githubusercontent.com/hogwild/3b9aa737bde61dcb4dfa60cde8046e04/raw/citibike2020.csv";
-var GDPUrl = "../src/GDPbyProvince.csv";
-var GarbageUrl = "../src/VolumeofGarbagebyProvince.csv";
-function ReadCSV(url) {
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0__.useState(),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    data = _React$useState2[0],
-    setData = _React$useState2[1];
-  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
-    papaparse__WEBPACK_IMPORTED_MODULE_6___default().parse(url, {
-      download: true,
-      complete: function complete(data) {
-        console.log(data.data);
-        setData(data.data);
-      }
-    });
-  }, []);
-  return data;
-}
+var lplTeamUrl = "https://gist.githubusercontent.com/KyrieTangSheng/be96c5e4df7748a5d8462fe618451bc6/raw/89c13d0e20363745625b391fade85c5cc081d8db/lpl_team.csv";
 function useData(csvPath) {
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0__.useState(null),
-    _React$useState4 = _slicedToArray(_React$useState3, 2),
-    dataAll = _React$useState4[0],
-    setData = _React$useState4[1];
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0__.useState(null),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    dataAll = _React$useState2[0],
+    setData = _React$useState2[1];
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     (0,d3__WEBPACK_IMPORTED_MODULE_3__.csv)(csvPath).then(function (data) {
       data.forEach(function (d) {});
@@ -64411,28 +64393,23 @@ function HeatMap() {
   console.log(TEAMATTR);
   var xScale = _scale__WEBPACK_IMPORTED_MODULE_4__.Scales.band(TEAMATTR, 0, width);
   var yScale = _scale__WEBPACK_IMPORTED_MODULE_4__.Scales.band(LPLTEAM, 0, height);
+  console.log('test', xScale(TEAMATTR));
   var saturationRange = [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]];
   console.log("saturation range", saturationRange);
-  var colorRange = [(0,d3__WEBPACK_IMPORTED_MODULE_3__.interpolateGnBu)(0), (0,d3__WEBPACK_IMPORTED_MODULE_3__.interpolateGnBu)(0.5), (0,d3__WEBPACK_IMPORTED_MODULE_3__.interpolateGnBu)(0.8)];
-  // const colormap = Scales.colormapLiner(startRange, colorRange);
-  // const colormap = Scales.colorSequential(startRange, interpolateGnBu);
-  // const colormap = Scales.colorDiverging(saturationRange, interpolateRdBu);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
-    width: WIDTH,
-    height: HEIGHT
+    width: WIDTH + 100,
+    height: HEIGHT + 100
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
     transform: "translate(".concat(margin.left, ", ").concat(margin.top, ")")
   }, lplTeamData.map(function (d, index) {
-    console.log("mapdata:", d);
+    console.log("mapdata:", index, d);
     return Object.keys(d).map(function (element) {
-      console.log('element:', element);
       if (TEAMATTR.includes(element)) {
         var colormap = _scale__WEBPACK_IMPORTED_MODULE_4__.Scales.colorSequential(saturationRange[index], d3__WEBPACK_IMPORTED_MODULE_3__.interpolateYlOrBr);
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_cell__WEBPACK_IMPORTED_MODULE_2__.Cell, {
           key: element + d.Team,
-          d: d,
-          dAttr: TEAMATTR,
-          dTeam: LPLTEAM,
+          dAttr: element,
+          dTeam: d.Team,
           xScale: xScale,
           yScale: yScale,
           color: colormap(d[element])
